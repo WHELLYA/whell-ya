@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>₩HELL YA — Shop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* 히어로 영상 섹션 */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .hero video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .scroll-indicator {
+            font-size: 11px;
+            color: #666;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* 상품 그리드 섹션 */
+        .shop-section {
+            padding: 60px 20px;
+        }
+
+        .shop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto 40px;
+        }
+
+        .shop-title {
+            font-family: 'Arial Black', 'Impact', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 4px;
+        }
+
+        .shop-count {
+            font-size: 12px;
+            color: #666;
+            letter-spacing: 2px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .product-img {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-placeholder {
+            font-size: 11px;
+            color: #333;
+            letter-spacing: 2px;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.02);
+        }
+
+        .product-info {
+            padding: 15px 10px;
+            background: #000;
+        }
+
+        .product-name {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .product-price {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .sold-out .product-img {
+            opacity: 0.4;
+        }
+
+        .sold-out .product-name::after {
+            content: ' — SOLD OUT';
+            color: #ff3333;
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .shop-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 히어로 영상 -->
+    <section class="hero">
+        <video autoplay muted loop playsinline>
+            <source src="" type="video/mp4">
+        </video>
+        <div class="hero-overlay">
+            <div class="scroll-indicator">Scroll</div>
+        </div>
+    </section>
+
+    <!-- 상품 그리드 -->
+    <section class="shop-section">
+        <div class="shop-header">
+            <div class="shop-title">COLLECTION</div>
+            <div class="shop-count">12 Items</div>
+        </div>
+
+        <div class="product-grid">
+
+            <div class="product-card">
+                <div class="product-img"><span class="product-placeholder">IMAGE</span></div>
+                <div class="product-info">
+                    <div class="product-name">₩HELL YA Logo Tee — Black</div>
+                    <div class="product-price">₩ 58,000</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img"><span class="product-placeholder">IMAGE</span></div>
+                <div class="product-info">
+                    <div class="product-name">₩HELL YA Logo Tee — White</div>
+                    <div class="product-price">₩ 58,000</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img"><span class="product-placeholder">IMAGE</span></div>
+                <div class="product-info">
+                    <div class="product-name">Flame Graphic Hoodie</div>
+                    <div class="product-price">₩ 98,000</div>
+                </div>
+            </div>
+
+            <div class="product-card sold-out">
+                <div class="product-img"><span class="product-placeholder">IMAGE</span></div>
+                <div class="product-info">
+                    <div class="product-name">Deck Print Coach Jacket</div>
+                    <div class="product-price">₩ 128,000</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img"><span class="product-placeholder">IMAGE</span></div>
+                <div class="product-info">
+                    <div class="product-name">Cargo Skate Pants</div>
+                    <div class="product-price">₩ 89,000</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img"><span class="product-placeholder">IMAGE</span></div>
+                <div class="product-info">
+                    <div class="product-name">₩HELL YA Beanie</div>
+                    <div class="product-price">₩ 32,000</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img"><span class="product-placeholder">IMAGE</span></div>
+                <div class="product-info">
+                    <div class="product-name">Spot Map Long Sleeve</div>
+                    <div class="product-price">₩ 62,000</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img"><span class="product-placeholder">IMAGE</span></div>
+                <div class="product-info">
+                    <div class="product-name">Grip Tape Socks 3-Pack</div>
+                    <div class="product-price">₩ 18,000</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img"><span class="product-placeholder">IMAGE</span></div>
+                <div class="product-info">
+                    <div class="product-name">Concrete Graphic Tee</div>
+                    <div class="product-price">₩ 55,000</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img"><span class="product-placeholder">IMAGE</span></div>
+                <div class="product-info">
+                    <div class="product-name">₩HELL YA Cap — Black</div>
+                    <div class="product-price">₩ 38,000</div>
+                </div>
+            </div>
+
+            <div class="product-card sold-out">
+                <div class="product-img"><span class="product-placeholder">IMAGE</span></div>
+                <div class="product-info">
+                    <div class="product-name">Issue 01 Varsity Jacket</div>
+                    <div class="product-price">₩ 178,000</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img"><span class="product-placeholder">IMAGE</span></div>
+                <div class="product-info">
+                    <div class="product-name">Wheel Logo Crewneck</div>
+                    <div class="product-price">₩ 78,000</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+</html>

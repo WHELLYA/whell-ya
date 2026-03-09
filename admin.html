@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>₩HELL YA — Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid #222;
+        }
+
+        .header-logo {
+            font-family: 'Arial Black', 'Impact', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .header-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .calendar {
+            background: #111;
+            border: 1px solid #222;
+            padding: 30px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .calendar-month {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .calendar-nav button {
+            background: #222;
+            border: 1px solid #333;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .calendar-nav button:hover {
+            background: #333;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+
+        .calendar-day-label {
+            text-align: center;
+            font-size: 11px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 10px 0;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 10px;
+            font-size: 14px;
+            color: #888;
+            background: #0a0a0a;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .calendar-day:hover {
+            background: #1a1a1a;
+        }
+
+        .calendar-day.today {
+            color: #fff;
+            background: #1a1a1a;
+        }
+
+        .calendar-day.today::after {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            margin-top: 6px;
+        }
+
+        .calendar-day.other-month {
+            color: #333;
+        }
+
+        .calendar-day.has-memo {
+            color: #fff;
+        }
+
+        .calendar-day.has-memo::after {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: #ff3333;
+            border-radius: 50%;
+            margin-top: 6px;
+        }
+
+        .memo-panel {
+            display: none;
+            background: #111;
+            border: 1px solid #222;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .memo-panel.active {
+            display: block;
+        }
+
+        .memo-date {
+            font-size: 18px;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .memo-input {
+            width: 100%;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 15px;
+            font-size: 14px;
+            font-family: 'Arial', sans-serif;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .memo-input:focus {
+            outline: none;
+            border-color: #fff;
+        }
+
+        .memo-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+
+        .btn-save {
+            background: #fff;
+            color: #000;
+        }
+
+        .btn-save:hover {
+            background: #ccc;
+        }
+
+        .btn-delete {
+            background: #222;
+            color: #ff3333;
+            border: 1px solid #333;
+        }
+
+        .btn-delete:hover {
+            background: #331111;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-logo">₩HELL YA</div>
+        <div class="header-label">Admin</div>
+    </header>
+
+    <div class="container">
+        <div class="section-title">Calendar</div>
+
+        <div class="calendar">
+            <div class="calendar-header">
+                <div class="calendar-month" id="calendarMonth"></div>
+                <div class="calendar-nav">
+                    <button id="prevMonth">&lt;</button>
+                    <button id="todayBtn">·</button>
+                    <button id="nextMonth">&gt;</button>
+                </div>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+
+        <div class="memo-panel" id="memoPanel">
+            <div class="memo-date" id="memoDate"></div>
+            <textarea class="memo-input" id="memoInput" placeholder="메모 입력..."></textarea>
+            <div class="memo-actions">
+                <button class="btn btn-save" id="memoSave">Save</button>
+                <button class="btn btn-delete" id="memoDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const MONTHS = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+        const DAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+        let currentDate = new Date();
+        let currentYear = currentDate.getFullYear();
+        let currentMonth = currentDate.getMonth();
+        let selectedDate = null;
+
+        function getMemos() {
+            return JSON.parse(localStorage.getItem('whellya_memos') || '{}');
+        }
+
+        function saveMemos(memos) {
+            localStorage.setItem('whellya_memos', JSON.stringify(memos));
+        }
+
+        function dateKey(y, m, d) {
+            return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const monthLabel = document.getElementById('calendarMonth');
+            const memos = getMemos();
+            const today = new Date();
+
+            monthLabel.textContent = `${MONTHS[currentMonth]} ${currentYear}`;
+
+            grid.innerHTML = '';
+
+            DAYS.forEach(day => {
+                const label = document.createElement('div');
+                label.className = 'calendar-day-label';
+                label.textContent = day;
+                grid.appendChild(label);
+            });
+
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+            for (let i = firstDay - 1; i >= 0; i--) {
+                const el = document.createElement('div');
+                el.className = 'calendar-day other-month';
+                el.textContent = daysInPrevMonth - i;
+                grid.appendChild(el);
+            }
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const el = document.createElement('div');
+                const key = dateKey(currentYear, currentMonth, d);
+                let classes = 'calendar-day';
+
+                if (today.getFullYear() === currentYear && today.getMonth() === currentMonth && today.getDate() === d) {
+                    classes += ' today';
+                }
+
+                if (memos[key]) {
+                    classes += ' has-memo';
+                }
+
+                el.className = classes;
+                el.textContent = d;
+                el.addEventListener('click', () => openMemo(currentYear, currentMonth, d));
+                grid.appendChild(el);
+            }
+
+            const totalCells = firstDay + daysInMonth;
+            const remaining = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+            for (let i = 1; i <= remaining; i++) {
+                const el = document.createElement('div');
+                el.className = 'calendar-day other-month';
+                el.textContent = i;
+                grid.appendChild(el);
+            }
+        }
+
+        function openMemo(y, m, d) {
+            const memos = getMemos();
+            const key = dateKey(y, m, d);
+            selectedDate = key;
+
+            document.getElementById('memoDate').textContent = key;
+            document.getElementById('memoInput').value = memos[key] || '';
+            document.getElementById('memoPanel').classList.add('active');
+            document.getElementById('memoInput').focus();
+        }
+
+        document.getElementById('memoSave').addEventListener('click', () => {
+            if (!selectedDate) return;
+            const memos = getMemos();
+            const value = document.getElementById('memoInput').value.trim();
+            if (value) {
+                memos[selectedDate] = value;
+            } else {
+                delete memos[selectedDate];
+            }
+            saveMemos(memos);
+            renderCalendar();
+        });
+
+        document.getElementById('memoDelete').addEventListener('click', () => {
+            if (!selectedDate) return;
+            const memos = getMemos();
+            delete memos[selectedDate];
+            saveMemos(memos);
+            document.getElementById('memoInput').value = '';
+            document.getElementById('memoPanel').classList.remove('active');
+            selectedDate = null;
+            renderCalendar();
+        });
+
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
+        });
+
+        document.getElementById('todayBtn').addEventListener('click', () => {
+            const today = new Date();
+            currentYear = today.getFullYear();
+            currentMonth = today.getMonth();
+            renderCalendar();
+        });
+
+        renderCalendar();
+    </script>
+</body>
+</html>
